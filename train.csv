@@ -1,0 +1,412 @@
+contract,label
+"contract Test {
+    uint256 public data;
+    function updateData(uint256 _data) public {
+        data = _data + 1; // Logical error: incorrect data update logic
+    }
+}",0
+"contract Test {
+    uint256 public data;
+    function updateData(uint256 _data) public {
+        data = _data; // Correct logic
+    }
+}",2
+"contract Test {
+    uint256 public data;
+    function updateData(uint256 _data) public {
+        if (_data > 10) {
+            data = _data; // Logical error: improper validation
+        }
+    }
+}",0
+"contract Test {
+    uint256[10] public dataArray;
+    function updateArray(uint256 index, uint256 value) public {
+        dataArray[index] = value; // Buffer overflow: no bounds checking
+    }
+}",1
+"contract Test {
+    uint256[10] public dataArray;
+    function updateArray(uint256 index, uint256 value) public {
+        require(index < 10, 'Index out of bounds');
+        dataArray[index] = value; // Correct logic with bounds checking
+    }
+}",2
+"contract Test {
+    function divide(uint256 a, uint256 b) public pure returns (uint256) {
+        return a / b; // Logical error: no check for division by zero
+    }
+}",0
+"contract Test {
+    function divide(uint256 a, uint256 b) public pure returns (uint256) {
+        require(b != 0, 'Division by zero');
+        return a / b; // Correct logic
+    }
+}",2
+"contract Test {
+    function withdraw(uint256 amount) public {
+        msg.sender.call.value(amount)(); // Logical error: reentrancy vulnerability
+    }
+}",0
+"contract Test {
+    function withdraw(uint256 amount) public {
+        (bool success, ) = msg.sender.call.value(amount)("");
+        require(success, 'Transfer failed'); // Correct logic with reentrancy protection
+    }
+}",2
+"contract Test {
+    uint256[10] public dataArray;
+    function updateArray(uint256 index, uint256 value) public {
+        if (index >= 10) {
+            dataArray[0] = value; // Logical error: incorrect index handling
+        } else {
+            dataArray[index] = value; // Correct logic
+        }
+    }
+}",0
+"contract Test {
+    uint256 public balance;
+    
+    function deposit() public payable {
+        balance += msg.value; // Logical error: incorrect balance update
+    }
+}", 0
+"contract Test {
+    address public owner;
+    bool public paused;
+    
+    constructor() {
+        owner = msg.sender;
+    }
+    
+    function togglePause() public {
+        paused = !paused; // Correct logic for pause/unpause
+    }
+}", 2
+"contract Test {
+    mapping(address => uint256) public balances;
+    
+    function transfer(address to, uint256 amount) public {
+        require(amount <= balances[msg.sender], 'Insufficient balance');
+        balances[msg.sender] -= amount; // Logical error: incorrect subtraction
+        balances[to] += amount; // Logical error: incorrect addition
+    }
+}",0
+"contract Test {
+    uint256 public totalSupply;
+    mapping(address => uint256) public balances;
+    
+    function mint(address account, uint256 amount) public {
+        require(msg.sender == owner, 'Unauthorized');
+        totalSupply += amount; // Correct logic for total supply increase
+        balances[account] += amount; // Correct logic for balance update
+    }
+}",2
+"contract Test {
+    uint256 public counter;
+    
+    function increment() public {
+        counter--; // Logical error: incorrect increment
+    }
+}",0
+"contract Test {
+    uint256[] public numbers;
+    
+    function addNumber(uint256 number) public {
+        numbers.push(number); // Correct logic for adding element to array
+    }
+}",2
+"contract Test {
+    address public owner;
+    mapping(address => uint256) public balances;
+    
+    constructor() {
+        owner = msg.sender;
+    }
+    
+    function withdraw() public {
+        require(msg.sender == owner, 'Unauthorized');
+        msg.sender.transfer(address(this).balance); // Correct logic for withdrawal
+    }
+}",2
+"contract Test {
+    uint256 public total;
+    uint256 public count;
+    
+    function add(uint256 amount) public {
+        total += amount;
+        count++; // Logical error: incorrect count increment
+    }
+}",0
+"contract Test {
+    uint256 public balance;
+    
+    function deposit() public payable {
+        balance = msg.value; // Logical error: incorrect balance update
+    }
+}",0
+"contract Test {
+    mapping(address => uint256) public balances;
+    
+    function transfer(address to, uint256 amount) public {
+        require(amount <= balances[msg.sender], 'Insufficient balance');
+        balances[msg.sender] -= amount; // Correct logic for sender balance update
+        balances[to] += amount; // Correct logic for receiver balance update
+    }
+}",2
+"contract Test {
+    uint256 public totalSupply;
+    mapping(address => uint256) public balances;
+    
+    function mint(address account, uint256 amount) public {
+        require(msg.sender == owner, 'Unauthorized');
+        totalSupply += amount; // Logical error: incorrect total supply increase
+        balances[account] = amount; // Correct logic for balance update
+    }
+}",0
+"contract Test {
+    address public owner;
+    bool public paused;
+    
+    constructor() {
+        owner = msg.sender;
+    }
+    
+    function togglePause() public {
+        paused = !paused; // Logical error: incorrect pause/unpause logic
+    }
+}",0
+"contract Test {
+    uint256 public counter;
+    
+    function increment() public {
+        counter++; // Correct logic for increment
+    }
+}",2
+"contract Test {
+    uint256 public total;
+    uint256 public count;
+    
+    function add(uint256 amount) public {
+        total += amount;
+        count += amount; // Correct logic for count increment
+    }
+}",2
+"contract Test {
+    uint256 public number;
+    
+    function setNumber(uint256 _number) public {
+        if (_number > 10) {
+            number = _number; // Logical error: improper validation
+        }
+    }
+}",0
+"contract Test {
+    address public owner;
+    
+    constructor() {
+        owner = msg.sender;
+    }
+    
+    function changeOwner(address newOwner) public {
+        require(msg.sender == owner, 'Unauthorized');
+        owner = newOwner; // Correct logic for owner change
+    }
+}",2
+"contract Test {
+    uint256 public balance;
+    
+    function deposit() public payable {
+        balance += msg.value; // Correct logic for deposit
+    }
+}",2
+"contract Test {
+    uint256 public value;
+    
+    function setValue(uint256 _value) public {
+        value = _value; // Correct logic for setting value
+    }
+}",2
+"contract Test {
+    uint256[] public numbers;
+    
+    function addNumber(uint256 number) public {
+        numbers.push(number); // Logical error: potential array overflow
+    }
+}", 0
+"contract Test {
+    uint256[] public numbers;
+    
+    function addNumber(uint256 number) public {
+        require(numbers.length < 10, 'Array is full');
+        numbers.push(number); // Correct logic with array size check
+    }
+}",2
+"contract Test {
+    uint256[50] public dataArray;
+    function updateArray(uint256 index, uint256 value) public {
+        dataArray[index] = value; // Buffer overflow: no bounds checking
+    }
+}",1
+"contract Test {
+    uint256[50] public dataArray;
+    function updateArray(uint256 index, uint256 value) public {
+        require(index < 50, 'Index out of bounds');
+        dataArray[index] = value; // Correct logic with bounds checking
+    }
+}",2
+"contract Test {
+    function divide(uint256 a, uint256 b) public pure returns (uint256) {
+        return a / b; // Logical error: no check for division by zero
+    }
+}",0
+"contract Test {
+    function divide(uint256 a, uint256 b) public pure returns (uint256) {
+        require(b != 0, 'Division by zero');
+        return a / b; // Correct logic
+    }
+}",2
+"contract Test {
+    uint256 public balance;
+    function withdraw(uint256 amount) public {
+        msg.sender.call.value(amount)(); // Logical error: reentrancy vulnerability
+    }
+}",0
+"contract Test {
+    uint256 public balance;
+    function withdraw(uint256 amount) public {
+        (bool success, ) = msg.sender.call.value(amount)("");
+        require(success, 'Transfer failed'); // Correct logic with reentrancy protection
+    }
+}",2
+"contract Test {
+    uint256 public data;
+    function updateData(uint256 _data) public {
+        data = _data + 10; // Logical error: incorrect data update logic
+    }
+}",0
+"contract Test {
+    uint256 public balance;
+    function deposit() public payable {
+        balance += msg.value; // Correct logic for balance update
+    }
+}",2
+"contract Test {
+    uint256 public data;
+    function updateData(uint256 _data) public {
+        if (_data >= 0) {
+            data = _data; // Correct validation logic
+        }
+    }
+}",2
+"contract Test {
+    uint256[50] public dataArray;
+    function updateArray(uint256 index, uint256 value) public {
+        dataArray[index] = value; // Buffer overflow: no bounds checking
+    }
+}",1
+"contract Test {
+    uint256[50] public dataArray;
+    function updateArray(uint256 index, uint256 value) public {
+        require(index < 50, 'Index out of bounds');
+        dataArray[index] = value; // Correct logic with bounds checking
+    }
+}",2
+"contract Test {
+    function divide(uint256 a, uint256 b) public pure returns (uint256) {
+        return a / b; // Logical error: no check for division by zero
+    }
+}",0
+"contract Test {
+    function divide(uint256 a, uint256 b) public pure returns (uint256) {
+        require(b != 0, 'Division by zero');
+        return a / b; // Correct logic
+    }
+}",2
+"contract Test {
+    uint256 public balance;
+    function withdraw(uint256 amount) public {
+        msg.sender.call.value(amount)(); // Logical error: reentrancy vulnerability
+    }
+}",0
+"contract Test {
+    uint256 public balance;
+    function withdraw(uint256 amount) public {
+        (bool success, ) = msg.sender.call.value(amount)("");
+        require(success, 'Transfer failed'); // Correct logic with reentrancy protection
+    }
+}",2
+
+"contract test {
+    uint8[10] public numbers;
+    function setNumber(uint index, uint8 value) public {
+        numbers[index] = value; // Buffer overflow: no bounds checking
+    }
+}",1
+
+
+"contract test {
+    uint256[3] public balances;
+    function deposit(uint256 index, uint256 amount) public {
+        balances[index] += amount; // Buffer overflow: no bounds checking
+    }
+}",1
+
+
+"contract test {
+    address[4] public addresses;
+    function setAddress(uint index, address newAddress) public {
+        addresses[index] = newAddress; // Buffer overflow: no bounds checking
+    }
+}",1
+"contract test {
+    bytes32[7] public data;
+    function updateData(uint index, bytes32 newData) public {
+        data[index] = newData; // Buffer overflow: no bounds checking
+    }
+}",1
+"contract test {
+    bool[2] public flags;
+    function setFlag(uint index, bool flag) public {
+        flags[index] = flag; // Buffer overflow: no bounds checking
+    }
+}",1
+
+"contract test {
+    uint16[8] public shortNumbers;
+    function setShortNumber(uint index, uint16 value) public {
+        shortNumbers[index] = value; // Buffer overflow: no bounds checking
+    }
+}",1
+
+
+"contract test {
+    int256[6] public intArray;
+    function updateIntArray(uint index, int256 value) public {
+        intArray[index] = value; // Buffer overflow: no bounds checking
+    }
+}",1
+
+"contract test {
+    string[5] public strings;
+    function setString(uint index, string memory newString) public {
+        strings[index] = newString; // Buffer overflow: no bounds checking
+    }
+}",1
+
+
+"contract test {
+    uint32[12] public smallNumbers;
+    function setSmallNumber(uint index, uint32 value) public {
+        smallNumbers[index] = value; // Buffer overflow: no bounds checking
+    }
+}",1
+
+
+"contract test {
+    int8[15] public tinyNumbers;
+    function setTinyNumber(uint index, int8 value) public {
+        tinyNumbers[index] = value; // Buffer overflow: no bounds checking
+    }
+}",1
+
