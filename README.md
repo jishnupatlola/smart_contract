@@ -15,7 +15,8 @@ Table of Contents
 
 
 Demo output:
- ![tune4](https://github.com/jishnupatlola/vulnerability-detection-using-codebert/assets/97329738/99a6857f-e99e-4209-983b-27bd9f7e584d)
+![Screenshot 2024-07-08 194821](https://github.com/jishnupatlola/vulnerability-detection-using-codebert/assets/97329738/b34cdc5f-2e75-47ee-bb84-607b64c0f91e)
+
 ![final res](https://github.com/jishnupatlola/vulnerability-detection-using-codebert/assets/97329738/6bb750c9-b800-48f9-abf3-8f64345f77d1)
 
 
